@@ -1,0 +1,13 @@
+<div class="mt-4">
+    <h3>Related words for "{{ word }}"</h3>
+    <ul>
+        {% for word in words %}
+        <li>
+            <form method="POST" hx-post="/explore" hx-target="this">
+                <input type="hidden" name="word" value="{{ word }}">
+                <button type="submit" class="btn btn-link">{{ word }}</button>
+            </form>
+        </li>
+        {% endfor %}
+    </ul>
+</div>

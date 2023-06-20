@@ -1,27 +1,35 @@
-from flask import Flask, render_template, request
+from flask import Flask, request, render_template
 import openai
-
-openai.api_key = 'your-api-key-here'
+import re
 
 app = Flask(__name__)
+openai.api_key = 'your-api-key-here'
 
-@app.route('/')
+@app.route('/', methods=['GET', 'POST'])
 def home():
+    if request.method == 'POST':
+        word = request.form.get('word')
+        related_words = get_related_words(word)
+        return render_template('word_list.html', word=word, words=related_words)
     return render_template('index.html')
 
-@app.route('/generate', methods=['POST'])
-def generate():
+@app.route('/explore', methods=['POST'])
+def explore():
     word = request.form.get('word')
-    prompt = f"Generate a list of related words for '{word}'"
-    response = openai.Completion.create(engine="text-davinci-003", prompt=prompt, max_tokens=100)
-    words = response.choices[0].text.strip().split(', ')
-    
-    html = "<ul>"
-    for word in words:
-        html += f'<li hx-get="/generate" hx-params="word:\'{word}\'" hx-trigger="click" hx-swap="outerHTML" hx-indicator="#loadingIndicator" hx-include="#loadingIndicator">{word}</li>'
-    html += "</ul>"
-    
-    return html
+    related_words = get_related_words(word)
+    return render_template('word_list.html', word=word, words=related_words)
+
+def get_related_words(word):
+    if request.method == 'POST':
+        word = request.form.get('word')
+    response = openai.Completion.create(
+      engine="text-davinci-002",
+      prompt=f"Generate a comma separated list of 5 words related to the word {word}",
+      temperature=0.5,
+      max_tokens=60
+    )
+    words = response.choices[0].text.strip().split(", ")
+    return words
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(port=5000, debug=True)

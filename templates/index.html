@@ -1,28 +1,21 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <title>Interactive Word Explorer</title>
-    <script src="https://unpkg.com/htmx.org@1.4.1"></script>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://unpkg.com/htmx.org@1.6.1"></script>
 </head>
-<style>
-    .loading-indicator {
-        display: none;
-        background-color: lightgray;
-        padding: 10px;
-        margin-top: 10px;
-        border-radius: 5px;
-    }
-    
-    .htmx-request .loading-indicator {
-        display: block;
-    }
-</style>
 <body>
-    <form hx-post="/generate" hx-trigger="submit" hx-swap="outerHTML" hx-indicator="#loadingIndicator" hx-include="#loadingIndicator">
-        <input type="text" name="word" placeholder="Enter a word">
-        <button type="submit">Explore</button>
-    </form>
-    <div id="results"></div>
-    <div id="loadingIndicator" style="display:none">Loading...</div>
+    <div class="container">
+        <h1>Interactive Word Explorer</h1>
+        <form method="POST" hx-post="/" hx-target="#word-list">
+            <div class="form-group">
+                <label for="word">Enter a word</label>
+                <input type="text" class="form-control" id="word" name="word" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Explore</button>
+        </form>
+        <div id="word-list"></div>
+    </div>
 </body>
 </html>
