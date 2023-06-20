@@ -14,8 +14,8 @@ Before you start, make sure you have Python 3.7 or later installed on your syste
 
 1. Clone this repository:
     ```bash
-    git clone https://github.com/yourusername/interactive-word-explorer.git
-    cd interactive-word-explorer
+    git clone https://github.com/danhussey/htmx-gpt
+    cd htmx-gpt
     ```
 
 2. Install the necessary Python packages:
